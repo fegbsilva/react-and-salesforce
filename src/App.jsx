@@ -7,8 +7,29 @@ import {
   createCase,
 } from "./services/salesforceMockService";
 import "./App.css";
+import { KanbanBoard } from "./components/KanbanBoard";
+import { NavLink, Route, Routes } from "react-router-dom";
+
+const linkStyle = ({ isActive }) => ({
+  padding: "8px 16px",
+  textDecoration: "none",
+  color: isActive ? "#0176d3" : "#181818",
+  fontWeight: isActive ? "700" : "400",
+  borderBottom: isActive ? "2px solid #0176d3" : "2px solid transparent",
+});
+
+function PortalHome() {
+  return (
+    <main style={{ padding: "20px", maxWidth: "1100px", margin: "0 auto" }}>
+      {/* Mantenha aqui o conteúdo da sua tela principal atual */}
+      
+    </main>
+  );
+}
+
 
 export default function App() {
+  const [showKanban, setShowKanban] = useState(true);
   const [account, setAccount] = useState(null);
   const [orders, setOrders] = useState([]);
   const [cases, setCases] = useState([]);
@@ -67,7 +88,28 @@ export default function App() {
 
   return (
     <div className="portal-container">
+      
       {/* Cabeçalho com dados do objeto Account */}
+      {/* Navegação principal entre páginas */}
+      <nav
+        style={{
+          display: "flex",
+          gap: "8px",
+          padding: "12px 20px",
+          borderBottom: "1px solid #dce3ec",
+          background: "#fff",
+          marginBottom: "20px",
+        }}
+      >
+        <NavLink to="/" end style={linkStyle}>
+          Tela Principal (Portal)
+        </NavLink>
+
+        <NavLink to="/kanban" style={linkStyle}>
+          Kanban
+        </NavLink>
+      </nav>
+
       <header className="portal-header">
         <div>
           <span className="badge-sf">Salesforce Customer Portal • Demo</span>
@@ -240,6 +282,12 @@ export default function App() {
         <span>Última operação Salesforce REST API simulada:</span>
         <code>{lastApiLog}</code>
       </footer>
+
+      {/* Router */}
+      <Routes>
+        <Route path="/" element={<PortalHome />} />
+        <Route path="/kanban" element={<KanbanBoard />} />
+      </Routes>
     </div>
   );
 }
